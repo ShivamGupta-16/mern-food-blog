@@ -223,6 +223,9 @@ section{
 }
 
 .form-control .input-textarea{
+  background-color: white;
+  color: #213547;
+  height: 100px;
 
   border: 1px solid rgb(156 163 175);
   border-radius: 4px;

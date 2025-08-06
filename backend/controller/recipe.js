@@ -28,15 +28,25 @@ const editRecipe=async (req, res)=> {
     let recipe = await Recipes.findById(req.params.id)
     try{
         if(recipe){
-            await Recipes.findByIdAndUpdate(req.params.id, req.body, {new:true})
+            let coverImage = req.file ?.filename ? req.file?.filename: recipe.coverImage;
+            await Recipes.findByIdAndUpdate(req.params.id,{...req.body,coverImage}, {new:true})
             res.json({title,ingredients,instructions,time})
         }
     }
     catch(err){
-        return res.status(400).json({message:"errorf"})
+        return res.status(404).json({message:"err"})
     }
 }
 
+const deleteRecipe=async(req, res)=> {
+    try{
+        await Recipes.deleteOne({_id:req.params.id})
+        res.json({status:"ok"})
+    }
+    catch(err){
+        return res.status(400).json({message:"error"})
+}
+}
 const addRecipe= async(req, res)=> {
     const {title,ingredients,coverImage,time,instructions} = req.body;
 
@@ -52,8 +62,5 @@ const addRecipe= async(req, res)=> {
     return res.json(newRecipe)
 }
 
-const deleteRecipe= async(req, res)=> {
-    await res.json({message:"Helo"})
-}
 
 module.exports = {getRecipes, getRecipe, addRecipe,editRecipe,deleteRecipe,upload}
